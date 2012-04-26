@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+# MongoKit-Backref
+# Copyright: (c) 2012 Christoph Heer <Christoph.Heer@googlemail.com>
+# License: BSD, see LICENSE for more details.
+
 from time import sleep
 
 from fabric import colors
@@ -52,8 +57,8 @@ def start():
         ]
         options_string = ' '.join(options)
         
-        run('%sgunicorn %s %s' % (prefix_string, options_string, 
-                                  env.gunicorn_wsgi_app))
+        run('%s gunicorn %s %s' % (prefix_string, options_string, 
+                                   env.gunicorn_wsgi_app))
 
         if gunicorn_running():
             puts(colors.green("gunicorn started"))
