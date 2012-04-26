@@ -29,7 +29,8 @@ Add ``import fabric_gunicorn as gunicorn`` to your new or existing fabfile.py. A
 
 Befor you can start a gunicorn process on your server you must set the gunicorn_wsgi_app env variable. Edit your fabfile.py and add something like: ``env.gunicorn_wsgi_app = 'hello.wsgi:app'``. The default workdir is the home directory of the connected user. You can also change this path with the env variable ``env.remote_workdir``.
 
-Normaly you shoudl now able to run ``fab gunicorn.start`` and the gunicorn server shoudl start on your remote machine. Gunicorn must be installed.
+Normaly you should now able to run ``fab gunicorn.start`` and the gunicorn server should start on your remote machine. Gunicorn must be installed.
+Your wsgi app is now avaiable under ``http://127.0.0.1:8000``.
 
 Configuration
 -------------
