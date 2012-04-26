@@ -3,6 +3,8 @@ fabric-gunicorn
 
 Control your gunicorn process with fabric.
 
+.. image:: http://files.thelabmill.de/fabric-gunicorn/fabric-gunicorn-status-start-stop.png
+
 Install
 -------
 
