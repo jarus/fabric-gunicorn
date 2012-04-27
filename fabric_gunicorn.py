@@ -104,3 +104,26 @@ def stop():
 def restart():
     stop()
     start()
+
+@task
+def add_worker():
+    set_env_defaults()
+    if not gunicorn_running():
+        puts(colors.red("gunicorn doesn't running"))
+        return
+    
+    puts(colors.green('increase number of workers'))
+    run('kill -TTIN `cat %s`' % (env.gunicorn_pidpath))
+    puts(colors.yellow('activ workers: %s' % gunicorn_running_workers()))
+
+@task
+def remove_worker():
+    set_env_defaults()
+    if not gunicorn_running():
+        puts(colors.red("gunicorn doesn't running"))
+        return
+
+    puts(colors.green('decrease number of workers'))
+    run('kill -TTOU `cat %s`' % (env.gunicorn_pidpath))
+    puts(colors.yellow('activ workers: %s' % gunicorn_running_workers()))
+
