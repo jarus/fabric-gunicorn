@@ -63,7 +63,7 @@ env.gunicorn_pidfile
   Default: ``remote_workdir/gunicorn.pid``
 
 env.gunicorn_workers
-  The number of gunicorn worker process.
+  The number of gunicorn worker processes by start.
   Default: ``1``
 
 env.gunicorn_worker_class
