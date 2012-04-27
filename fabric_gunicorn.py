@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# MongoKit-Backref
+# fabric-gunicorn
 # Copyright: (c) 2012 Christoph Heer <Christoph.Heer@googlemail.com>
 # License: BSD, see LICENSE for more details.
 
@@ -30,7 +30,10 @@ def gunicorn_running_workers():
 
 @task
 def status():
+    """Show the current status of your gunicorn process"""
+    
     set_env_defaults()
+    
     if gunicorn_running():
         puts(colors.green("gunicorn is running"))
         puts(colors.yellow('workers: %s' % gunicorn_running_workers()))
@@ -39,7 +42,10 @@ def status():
 
 @task
 def start():
+    """Start the gunicorn process"""
+    
     set_env_defaults()
+    
     if gunicorn_running():
         puts(colors.red("gunicorn is allready running"))
         return
@@ -80,7 +86,10 @@ def start():
 
 @task
 def stop():
+    """Stop the gunicorn process"""
+    
     set_env_defaults()
+    
     if not gunicorn_running():
         puts(colors.red("gunicorn doesn't running"))
         return
@@ -102,11 +111,14 @@ def stop():
 
 @task
 def restart():
+    """Restart hard the gunicorn process"""
     stop()
     start()
 
 @task
 def reload():
+    """Reload gracefully the gunicorn process and the wsgi application"""
+    
     set_env_defaults()
     if not gunicorn_running():
         puts(colors.red("gunicorn doesn't running"))
@@ -116,6 +128,7 @@ def reload():
 
 @task
 def add_worker():
+    """Increase the number of your gunicorn workers"""
     set_env_defaults()
     if not gunicorn_running():
         puts(colors.red("gunicorn doesn't running"))
@@ -127,6 +140,7 @@ def add_worker():
 
 @task
 def remove_worker():
+    """Decrease the number of your gunicorn workers"""
     set_env_defaults()
     if not gunicorn_running():
         puts(colors.red("gunicorn doesn't running"))

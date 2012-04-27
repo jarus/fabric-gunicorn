@@ -22,16 +22,16 @@ Add ``import fabric_gunicorn as gunicorn`` to your new or existing fabfile.py. A
 
 ::
 
-    $ fab -l
     Available commands:
     
-        gunicorn.add_worker
-        gunicorn.reload
-        gunicorn.remove_worker
-        gunicorn.restart
-        gunicorn.start
-        gunicorn.status
-        gunicorn.stop
+    gunicorn.add_worker     Increase the number of your gunicorn workers
+    gunicorn.reload         Reload gracefully the gunicorn process and the wsgi application
+    gunicorn.remove_worker  Decrease the number of your gunicorn workers
+    gunicorn.restart        Restart hard the gunicorn process
+    gunicorn.start          Start the gunicorn process
+    gunicorn.status         Show the current status of your gunicorn process
+    gunicorn.stop           Stop the gunicorn process
+
 
 Befor you can start a gunicorn process on your server you must set the gunicorn_wsgi_app env variable. Edit your fabfile.py and add something like: ``env.gunicorn_wsgi_app = 'hello.wsgi:app'``. The default workdir is the home directory of the connected user. You can also change this path with the env variable ``env.remote_workdir``.
 
