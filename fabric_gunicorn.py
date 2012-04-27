@@ -106,6 +106,15 @@ def restart():
     start()
 
 @task
+def reload():
+    set_env_defaults()
+    if not gunicorn_running():
+        puts(colors.red("gunicorn doesn't running"))
+        return
+    
+    run('kill -HUP `cat %s`' % (env.gunicorn_pidpath))
+
+@task
 def add_worker():
     set_env_defaults()
     if not gunicorn_running():
