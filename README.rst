@@ -25,6 +25,7 @@ Add ``import fabric_gunicorn as gunicorn`` to your new or existing fabfile.py. A
     $ fab -l
     Available commands:
     
+        gunicorn.restart
         gunicorn.start
         gunicorn.status
         gunicorn.stop

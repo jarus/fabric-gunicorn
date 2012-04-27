@@ -86,4 +86,9 @@ def stop():
     else:
         puts(colors.red("gunicorn doesn't stopped"))
         return            
-            
+
+@task
+def restart():
+    stop()
+    start()
+    
