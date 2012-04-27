@@ -9,6 +9,7 @@ from fabric import colors
 from fabric.api import task, env, run, cd
 from fabric.utils import abort, puts
 from fabric.contrib import files
+from fabric.context_managers import hide
 
 def set_env_defaults():
     env.setdefault('remote_workdir', '~')
@@ -20,11 +21,19 @@ set_env_defaults()
 def gunicorn_running():
     return files.exists(env.gunicorn_pidpath)
 
+def gunicorn_running_workers():
+    count = None
+    with hide('running', 'stdout', 'stderr'):
+        count = run('ps -e -o ppid | grep `cat %s` | wc -l' % 
+                    env.gunicorn_pidpath)
+    return count
+
 @task
 def status():
     set_env_defaults()
     if gunicorn_running():
         puts(colors.green("gunicorn is running"))
+        puts(colors.yellow('workers: %s' % gunicorn_running_workers()))
     else:
         puts(colors.blue("gunicorn isn't running"))
 
@@ -95,4 +104,3 @@ def stop():
 def restart():
     stop()
     start()
-    
