@@ -55,6 +55,10 @@ def start():
             '--pid %s' % env.gunicorn_pidpath,
             '--bind %s' % env.gunicorn_bind,
         ]
+        if 'gunicorn_workers' in env:
+            options.append('--workers %s' % env.gunicorn_workers)
+        if 'gunicorn_worker_class' in env:
+            options.append('--worker-class %s' % env.gunicorn_worker_class)
         options_string = ' '.join(options)
         
         run('%s gunicorn %s %s' % (prefix_string, options_string, 

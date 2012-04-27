@@ -59,6 +59,14 @@ env.gunicorn_pidfile
   The path for the pidfile of the gunicorn master process.
   Default: ``remote_workdir/gunicorn.pid``
 
+env.gunicorn_workers
+  The number of gunicorn worker process.
+  Default: ``1``
+
+env.gunicorn_worker_class
+  The class of worker you want to use. Normal the default ``sync`` worker
+  should run fine. More under: http://gunicorn.org/design.html
+
 env.django_settings_module
   This is special for django to set the DJANGO_SETTINGS_MODULE path.
   Example: ``mydjangoproject.settings``
