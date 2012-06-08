@@ -123,7 +123,7 @@ def reload():
     if not gunicorn_running():
         puts(colors.red("gunicorn doesn't running"))
         return
-    
+    puts(colors.yellow('reload gunicorn graceful'))
     run('kill -HUP `cat %s`' % (env.gunicorn_pidpath))
 
 @task
