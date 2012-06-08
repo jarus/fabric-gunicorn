@@ -58,7 +58,7 @@ env.gunicorn_bind
   Define on which port or socket gunicorn should bind.
   Default: ``127.0.0.1:8000``
 
-env.gunicorn_pidfile
+env.gunicorn_pidpath
   The path for the pidfile of the gunicorn master process.
   Default: ``remote_workdir/gunicorn.pid``
 
