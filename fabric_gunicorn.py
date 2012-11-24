@@ -21,7 +21,7 @@ set_env_defaults()
 
 
 def gunicorn_running():
-    return files.exists(env.gunicorn_pidpath)
+    return run('ls ' + env.gunicorn_pidpath, quiet=True).succeeded
 
 
 def gunicorn_running_workers():
