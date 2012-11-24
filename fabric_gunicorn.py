@@ -11,6 +11,7 @@ from fabric.utils import abort, puts
 from fabric.contrib import files
 from fabric.context_managers import hide
 
+
 def set_env_defaults():
     env.setdefault('remote_workdir', '~')
     env.setdefault('gunicorn_pidpath', env.remote_workdir + '/gunicorn.pid')
@@ -18,8 +19,10 @@ def set_env_defaults():
 
 set_env_defaults()
 
+
 def gunicorn_running():
     return files.exists(env.gunicorn_pidpath)
+
 
 def gunicorn_running_workers():
     count = None
@@ -27,6 +30,7 @@ def gunicorn_running_workers():
         count = run('ps -e -o ppid | grep `cat %s` | wc -l' %
                     env.gunicorn_pidpath)
     return count
+
 
 @task
 def status():
@@ -39,6 +43,7 @@ def status():
         puts(colors.yellow('Active workers: %s' % gunicorn_running_workers()))
     else:
         puts(colors.blue("Gunicorn isn't running."))
+
 
 @task
 def start():
@@ -84,6 +89,7 @@ def start():
         else:
             abort(colors.red("Gunicorn wasn't started."))
 
+
 @task
 def stop():
     """Stop the Gunicorn process"""
@@ -97,7 +103,7 @@ def stop():
     run('kill `cat %s`' % (env.gunicorn_pidpath))
 
     for i in range(0, 5):
-        puts('.', end='', show_prefix=i==0)
+        puts('.', end='', show_prefix=i == 0)
 
         if gunicorn_running():
             sleep(1)
@@ -109,11 +115,13 @@ def stop():
         puts(colors.red("Gunicorn wasn't stopped."))
         return
 
+
 @task
 def restart():
     """Restart hard the Gunicorn process"""
     stop()
     start()
+
 
 @task
 def reload():
@@ -125,6 +133,7 @@ def reload():
         return
     puts(colors.yellow('Gracefully reloading Gunicorn...'))
     run('kill -HUP `cat %s`' % (env.gunicorn_pidpath))
+
 
 @task
 def add_worker():
@@ -138,6 +147,7 @@ def add_worker():
     run('kill -TTIN `cat %s`' % (env.gunicorn_pidpath))
     puts(colors.yellow('Active workers: %s' % gunicorn_running_workers()))
 
+
 @task
 def remove_worker():
     """Decrease the number of your Gunicorn workers"""
@@ -149,4 +159,3 @@ def remove_worker():
     puts(colors.green('Decreasing number of workers...'))
     run('kill -TTOU `cat %s`' % (env.gunicorn_pidpath))
     puts(colors.yellow('Active workers: %s' % gunicorn_running_workers()))
-
