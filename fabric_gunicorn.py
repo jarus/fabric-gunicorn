@@ -87,7 +87,7 @@ def start():
         if gunicorn_running():
             puts(colors.green("Gunicorn started."))
         else:
-            abort(colors.red("Gunicorn wasn't started."))
+            abort(colors.red("Gunicorn wasn't started!"))
 
 
 @task
@@ -112,7 +112,7 @@ def stop():
             puts(colors.green("Gunicorn was stopped."))
             break
     else:
-        puts(colors.red("Gunicorn wasn't stopped."))
+        puts(colors.red("Gunicorn wasn't stopped!"))
         return
 
 
