@@ -15,7 +15,7 @@ def set_env_defaults():
     env.setdefault('remote_workdir', '~')
     env.setdefault('gunicorn_pidpath', env.remote_workdir + '/gunicorn.pid')
     env.setdefault('gunicorn_bind', '127.0.0.1:8000')
-    
+
 set_env_defaults()
 
 def gunicorn_running():
@@ -24,16 +24,16 @@ def gunicorn_running():
 def gunicorn_running_workers():
     count = None
     with hide('running', 'stdout', 'stderr'):
-        count = run('ps -e -o ppid | grep `cat %s` | wc -l' % 
+        count = run('ps -e -o ppid | grep `cat %s` | wc -l' %
                     env.gunicorn_pidpath)
     return count
 
 @task
 def status():
     """Show the current status of your Gunicorn process"""
-    
+
     set_env_defaults()
-    
+
     if gunicorn_running():
         puts(colors.green("Gunicorn is running."))
         puts(colors.yellow('Active workers: %s' % gunicorn_running_workers()))
@@ -43,28 +43,28 @@ def status():
 @task
 def start():
     """Start the Gunicorn process"""
-    
+
     set_env_defaults()
-    
+
     if gunicorn_running():
         puts(colors.red("Gunicorn is already running!"))
         return
-    
+
     if 'gunicorn_wsgi_app' not in env:
         abort(colors.red('env.gunicorn_wsgi_app not defined'))
-        
+
     with cd(env.remote_workdir):
         prefix = []
         if 'virtualenv_dir' in env:
             prefix.append('source %s/bin/activate' % env.virtualenv_dir)
         if 'django_settings_module' in env:
-            prefix.append('export DJANGO_SETTINGS_MODULE=%s' % 
+            prefix.append('export DJANGO_SETTINGS_MODULE=%s' %
                           env.django_settings_module)
-        
+
         prefix_string = ' && '.join(prefix)
         if len(prefix_string) > 0:
             prefix_string += ' && '
-        
+
         options = [
             '--daemon',
             '--pid %s' % env.gunicorn_pidpath,
@@ -75,8 +75,8 @@ def start():
         if 'gunicorn_worker_class' in env:
             options.append('--worker-class %s' % env.gunicorn_worker_class)
         options_string = ' '.join(options)
-        
-        run('%s gunicorn %s %s' % (prefix_string, options_string, 
+
+        run('%s gunicorn %s %s' % (prefix_string, options_string,
                                    env.gunicorn_wsgi_app))
 
         if gunicorn_running():
@@ -87,18 +87,18 @@ def start():
 @task
 def stop():
     """Stop the Gunicorn process"""
-    
+
     set_env_defaults()
-    
+
     if not gunicorn_running():
         puts(colors.red("Gunicorn isn't running!"))
         return
-    
+
     run('kill `cat %s`' % (env.gunicorn_pidpath))
 
     for i in range(0, 5):
         puts('.', end='', show_prefix=i==0)
-        
+
         if gunicorn_running():
             sleep(1)
         else:
@@ -107,7 +107,7 @@ def stop():
             break
     else:
         puts(colors.red("Gunicorn wasn't stopped."))
-        return            
+        return
 
 @task
 def restart():
@@ -118,7 +118,7 @@ def restart():
 @task
 def reload():
     """Gracefully reload the Gunicorn process and the wsgi application"""
-    
+
     set_env_defaults()
     if not gunicorn_running():
         puts(colors.red("Gunicorn isn't running!"))
@@ -133,7 +133,7 @@ def add_worker():
     if not gunicorn_running():
         puts(colors.red("Gunicorn isn't running!"))
         return
-    
+
     puts(colors.green('Increasing number of workers...'))
     run('kill -TTIN `cat %s`' % (env.gunicorn_pidpath))
     puts(colors.yellow('Active workers: %s' % gunicorn_running_workers()))
