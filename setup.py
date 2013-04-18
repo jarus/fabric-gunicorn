@@ -19,7 +19,7 @@ from setuptools import setup
 
 setup(
     name='fabric-gunicorn',
-    version='0.1',
+    version='0.2',
     url='http://github.com/jarus/fabric-gunicorn',
     license='BSD',
     author='Christoph Heer',
