@@ -73,3 +73,7 @@ env.gunicorn_worker_class
 env.django_settings_module
   This is special for django to set the DJANGO_SETTINGS_MODULE path.
   Example: ``mydjangoproject.settings``
+
+env.paster_config_file
+  This should point to your application.ini paster deploy settings file. Setting this will cause gunicorn to execute using gunicorn_paster instead of gunicorn.
+  Example: ``config/application.ini``
