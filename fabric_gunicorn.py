@@ -8,7 +8,6 @@ from time import sleep
 from fabric import colors
 from fabric.api import task, env, run, cd
 from fabric.utils import abort, puts
-from fabric.contrib import files
 from fabric.context_managers import hide
 
 
@@ -81,7 +80,11 @@ def start():
             options.append('--worker-class %s' % env.gunicorn_worker_class)
         options_string = ' '.join(options)
 
-        run('%s gunicorn %s %s' % (prefix_string, options_string,
+        if 'paster_config_file' in env:
+            run('%s gunicorn_paster %s %s' % (prefix_string, options_string,
+                                   env.paster_config_file))
+        else:
+            run('%s gunicorn %s %s' % (prefix_string, options_string,
                                    env.gunicorn_wsgi_app))
 
         if gunicorn_running():
